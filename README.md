@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Programming Challenge Platform
 
 A modern web application built with Nuxt 3, Firebase Authentication, and Firestore that allows users to solve programming challenges and submit their solutions.
@@ -284,3 +285,6 @@ For support and questions:
 ---
 
 **Happy Coding! 🚀**
+=======
+# CodeChallenge
+>>>>>>> 19a3e0546c7a0c831ec64d4e883b59476bee0192

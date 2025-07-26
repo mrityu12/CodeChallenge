@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ✅ Helper: Check if user is a system admin
+    function isSystemAdmin() {
+      return request.auth != null && 
+        request.auth.token.email in [
+          'admin@example.com',           // Replace with your real admin emails
+          'admin2@example.com'
+        ];
+    }
+
+    // ✅ Helper: Check if user is any admin
+    function isAdmin() {
+      return isSystemAdmin() || 
+        (request.auth != null &&
+         exists(/databases/$(database)/documents/admins/$(request.auth.token.email)));
+    }
+
+    // ✅ Submissions collection - Programming challenge submissions
+    match /submissions/{submissionId} {
+      // Allow users to create submissions with their own email
+      allow create: if request.auth != null &&
+        request.auth.token.email == request.resource.data.userEmail &&
+        request.auth.token.email_verified == true;
+
+      // Allow admins to read all
+      allow read: if isAdmin();
+
+      // Allow users to read their own submissions
+      allow read: if request.auth != null &&
+        request.auth.token.email == resource.data.userEmail;
+
+      // Disallow updates/deletes
+      allow update, delete: if false;
+    }
+
+    // ✅ Admins collection - Manage admin users
+    match /admins/{adminEmail} {
+      // Only system admins can create admin records
+      allow create: if isSystemAdmin() &&
+        request.auth.token.email_verified == true &&
+        adminEmail == request.resource.data.email;
+
+      // Allow all admins to read admin records
+      allow read: if isAdmin();
+
+      // Only system admins can update records
+      allow update: if isSystemAdmin();
+
+      // Only system admins can delete, and can't delete themselves
+      allow delete: if isSystemAdmin() &&
+        !(adminEmail in [
+          'admin@example.com',     // Replace with your real system admin emails
+          'admin2@example.com'
+        ]);
+    }
+
+    // ✅ Questions collection - Used in /question.vue
+    match /questions/{questionId} {
+      // Any signed-in user can read questions
+      allow read: if request.auth != null;
+
+      // Only system admins can write/update/delete questions
+      allow write, update, delete: if isSystemAdmin();
+    }
+
+    // ❌ Deny everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

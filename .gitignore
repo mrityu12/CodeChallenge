@@ -10,7 +10,6 @@ dist
 node_modules
 
 # Logs
-logs
 *.log
 
 # Misc
@@ -22,3 +21,13 @@ logs
 .env
 .env.*
 !.env.example
+
+# Firebase
+.firebase
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Screenshots and demo files (optional - remove if you want to commit them)
+screenshots/
+demo-video.mp4

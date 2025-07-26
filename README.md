@@ -98,6 +98,26 @@ npm run generate
 # Preview production build
 npm run preview
 ```
+## 📸 Screenshots
+
+### 🖼️ Home Page
+![Screenshot 1](img1.png)
+
+### 🧾 Challenge Page
+![Screenshot 2](img2.png)
+
+### 📄 Submission Page
+![Screenshot 3](img3.png)
+
+### 📊 Admin Dashboard
+![Screenshot 4](img4.png)
+
+### 🔐 Login Page
+![Screenshot 5](img5.png)
+
+### 📁 User Profile
+![Screenshot 6](img6.png)
+
 
 ## 📁 Project Structure
 
